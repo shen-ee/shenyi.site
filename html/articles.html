@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Welcome to Yi SHen's Website</title>
+<link rel="alternate" type="application/rss+xml" title="egrappler.com" href="feed/index.html">
+<link href="http://fonts.googleapis.com/css?family=Raleway:700,300" rel="stylesheet"
+        type="text/css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/prettify.css">
+</head>
+<body >
+<nav>
+  <div class="container">
+    <h1>SY</h1>
+    <div id="menu">
+      <ul class="toplinks">
+        <li><a href="index.html">Index </a></li>
+        <li><a href="index2.html">Chinese Version </a></li>
+        <li><a href="articles.html">Articles </a></li>
+        <li><a href="papers.html">Paper Comprehesion </a></li>
+      </ul>
+    </div>
+    <a id="menu-toggle" href="#" class=" ">&#9776;</a> </div>
+</nav>
+<header>
+  <div class="container">
+    <h2 class="docs-header"> Welcome , mi amigo!
+    </h2> 
+  </div>
+</header>
+<section>
+  <div class="container">
+    <ul class="docs-nav" id="menu-left" >   
+    <li><strong>Person Re-id</strong></li>
+      <li><a href="#a11280" class=" ">初步认识</a></li>
+      <li><a href="#a11281" class=" ">开源代码</a></li>
+      <li><a href="#a11282" class=" ">其他资源</a></li>
+      <li class="separator"></li>
+      <li><strong>Daily Life</strong></li>
+      <li><a href="#a2" class=" ">如何做一名合格的团员</a></li>
+      <li><a href="#a1" class=" ">学不好英语就是懒</a></li>
+      <li class="separator"></li>
+    </ul>
+    <div class="docs-content" >
+      <h2> Person Re-id</h2>
+      <h3 id="a11280"> 初步认识</h3>
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp重识别这事说白了就是给你一个指定的人（probe，可以是同一场景下的一张图或者多张图），再给你一坨视频（gallery，其他场景下的图片序列），然后让你从这一坨视频中找出这个人。</p>
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp从2005年开始有行人重识别这个具体命题之后，大多数算法关注的都是匹配的准确性问题，很少关注效率问题。但这个问题的初衷确实就是为了在海量数据中快速找到目标人，如果效率还不如人眼，那意义何在（虽然这跟设备性能有关，但足够高性能的计算设备又不便宜，做不到普及）。《Person Re-identification: Past, Present and Future》里关于行人重识别中，数据集爆炸增长的问题提到了两个方法：</p>
+      <ul>
+        <li>inverted index-based</li>
+        <li>hashing based</li>
+      </ul>
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp前者暂且不提，虽然这两者有一定联系，hashing 是我要干的事情。为什么要用hashing，我的理解是，原来DL之后提取的特征向量往往维度很高，成百上千的。而假设有一个probe，在一个简单的一分钟场景下，你需要和20000张图片进行相似度计算（假设30帧每秒，有60秒，每帧中间有10个人，四舍五入就是20000容量的gallery）。而如果我们对每张照片的特征向量先进行用一个哈希操作，将它的维度降到很低，并保证相似的图片在变为哈希编码之后仍保持相似（LSH，Locality Sensitive Hashing）。甚至说，我们可以先把视频的每帧先进行哈希处理，并储存起来，用的时候直接比较哈希编码，这样简直快到炸。（当然，考虑到每个摄像头之间的差异这还是有点困难，但这是每一种方法都得考虑的事情，也算是瓶颈之一）</p>
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp现在找到的跟哈希有关的重识别文章有这么几篇：</p>
+      <ul>
+        <li>《Bit-Scalable Deep Hashing with Regularized Similarity Learning for Image Retrieval and Person Re-identification》<a href="https://arxiv.org/pdf/1508.04535" >Download</a></li>
+        <li>《Learning Cross-View Binary Identities for Fast Person Re-Identification》<a href="https://pdfs.semanticscholar.org/95be/490aef44da67ca1cef76b16df14b6e40c421.pdf" >Download</a></li>
+      </ul>
+      <h3 id="a11281"> 开源代码</h3>
+      <p>ID-discriminative Embedding (IDE) for Person Re-identification: <a href="https://github.com/zhunzhong07/IDE-baseline-Market-1501">Link</a> </p>
+      <ul>
+        <li>Paper:《Scalable Person Re-identification: A Benchmark》<a href="http://www.cv-foundation.org/openaccess/content_iccv_2015/papers/Zheng_Scalable_Person_Re-Identification_ICCV_2015_paper.pdf" >Download</a></li>
+        <li>使用了Caffe框架</li>
+        <li>提供了CaffeNet或者ResNet50进行训练</li>
+        <li>提取Pool5层的特征（2048 dims）</li>
+        <li>使用Euclidean、XQDA、KISSME方法进行度量学习</li>
+      </ul>
+
+      <h3 id="a11282"> 其他资源</h3>
+      <p>PPT：</p>
+      <ul>
+        <li>《Deep re-id: 关于行人重识别的深度学习方法》：<a href="https://www.slideshare.net/ZhedongZheng1/deep-reid" >Link</a></li>
+        <ul>
+        <li>图很多，能有一个感性的认识</li>
+        </ul>
+      </ul>
+
+      <p>Related Scholars（感觉这块儿中国人做的比较多）：</p>
+      <ul>
+        <li>Liang Zheng（THU）：<a href="http://www.liangzheng.org" >Homepage</a></li>
+        <li>Zhedong Zheng（UTS）：<a href="http://www.zdzheng.xyz" >Homepage</a></li>
+      </ul>
+
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>
+      <h2> Daily Life</h2>
+      <h3 id="a2"> 如何做一名合格的团员</h3>
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp我觉得团员这个名词，对大部分普通人来说只存在一个象征意义，并不会有很多人会想这个共青团这个东西会指导我们来做什么。</p>
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp小学的时候选少先队员，最开始我以为只有最优秀的小孩才可以入队，所以当一开始没有被选选中时，我是很沮丧的。到后来陆陆续续所有人都入队了，我才发现，就好像读完六年级才能读初中一样，小学入队是一件理所当然的事，并没有什么大不了。</p>
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp所以上了初中之后，当我知道有共青团这个东西之后，我自然吸取了教训，懂得这大概是个人人都要进去的组织，于是这次，入团的先后就成了某种衡量优秀与否的尺标。当被选为第一批入团的代表之一时，我自然是激动的，这并不是因为我对共青团有多大的向往，只不过，这是一种象征而已，我牛逼啊所以我第一批进。不幸的是，后来因为自己磨叽，找老师签字的时候错过了截止时间，被班主任一怒之下撤销了入团的资格。不久后我好像还因为此事写了篇作文，详细记录了我有多么懊恼自己的行为，并表达了我对成为一名共青团员的渴望，现在想想，多尴尬呢，更尴尬是还被老师当作优秀作文读了出来，大家不禁向我投来怜悯而充满敬意的目光，我也只好露出虔诚的眼神。</p>
+      <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp“如何做一名合格的团员”这个命题对于当时的我来说，答案大概是努力学习，以及带领大家努力学习。到现在，这个命题对我来说更像是“如何做一个合格的社会人”。
+      对此我也没什么特别深入的理解，最基本的大概是，不给社会添乱。考虑到社会是由人构成的，这多少也包括了，别给其他人添乱。不添乱有点口语化，我的理解是，不妨碍别人行使合法权利，不影响别人的情绪以至使别人作出可能危害他人的事。</p>
+      <p> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp或者再加几条，让这个合格的标准看起来更合格一点。譬如说，做些力所能及的事去帮助别人，扶老奶奶过马路暂且不提，现在路上的老奶奶也未必需要你扶，不过上下楼梯帮老奶奶拎拎重物还是可以做到的。再比如，充满社会责任感，这个社会是靠所有人来维护的呐，作为一个团员，更有义务去带领大家走向繁荣富强，面对那些违法乱纪的事，不要怂，你自己不好去制止，你就去举报啊，有些人一腔热血，换作两句国骂，我以为这不算一个足够合格的团员。</p>
+      <p> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp我想我没有直接从网上抄范本，大概还算是对团组织有诚意。</p>
+
+      <h3 id="a1"> 学不好英语就是懒</h3>
+         <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp     当年马瑞斌如是跟我说。这大概也是我近几年听到的为数不多的大实话之一。</p>
+        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp本来你说考不好倒也没什么，问题是你自己根本是没努力啊，人ETS也不是大傻子，你说要是像我这种不好好复习的都能考好了，可不是莫大的羞辱。这么一来，甚至好像没有理由因为成绩的不理想而难过，转而走向对自己的又一次失望。</p>
+        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp想我大学这三年来，对于自己的英语，总是处以一种沾沾自喜的态度。要说最当初，恐怕得追溯到军训的时候，某一天晚上被拉出去考试，说是为了开学后的英语分班，做完感觉还行，还行的意思就是，起码是做完了。然后很久以后，我看到了一份那张试卷的分数表，里面显示的是达到英语免修成绩的人的名单，我的名字写在上面。</p>
+        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp我姑且把这种感觉称为是一种优越感，优越感这种东西，真的是很蠢，它能让你迷失对自己的认识，让你在做出一些选择时候，受到一些多余条件的限制。你在做一件事，总是想着我多牛逼啊，怎么可能做得好，何况你牛逼吗。于是就高不成低不就，于是就停滞在这种沾沾自喜的氛围中了。诚然，你沈毅的英语确实比周围人稍微好那么一点，不过也就是江苏的英语环境还可以，你沾点光罢了。</p>
+        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp学语言这种东西，抛开语言天才不提，以我的浅见，无非就是一个积累的过程。听多了看多了，然后或者从别人那吸收点规律，或者自己总结点规律，之后依葫芦画瓢便是。问题这积累要时间啊，你不肯花时间去积累，你又想突然有巨大的提升？</p>
+        <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp说了这么些，我就想说，我就是懒，得治，几斤几两自己心里清楚。但这话恐怕又不好随便说出去，不然别人一句“你还懒呢，逗我吧”又会让我下意识觉得自己很勤奋了。</p>
+
+
+</p>
+    </div>
+  </div>
+</section>
+<section class="vibrant centered">
+  <div class="container">
+    <h4> Back to <a href="index.html"> Index</a></h4>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <img width=13 height=16 src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/copy_rignt_24.png">京ICP备17047426号-1</img>
+  </div>
+</footer>
+<script src="js/jquery.min.js"></script> 
+ 
+<script type="text/javascript" src="js/prettify/prettify.js"></script> 
+<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?lang=css&skin=sunburst"></script>
+<script src="js/layout.js"></script>
+ <script src="js/jquery.localscroll-1.2.7.js" type="text/javascript"></script>
+ <script src="js/jquery.scrollTo-1.4.3.1.js" type="text/javascript"></script>
+
+</body>
+</html>
